@@ -1,0 +1,45 @@
+.Table {
+    border-collapse: collapse;
+    margin: 4vmin;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.Table td {
+    border: 1px solid #eee;
+}
+
+.Table .GridTop {
+    border-top: 4px solid black;
+}
+
+.Table .GridLeft {
+    border-left: 4px solid black;
+}
+
+.Table .GridRight {
+    border-right: 4px solid black;
+}
+
+.Table .GridBottom {
+    border-bottom: 4px solid black;
+}
+
+.Table .GroupTop {
+    border-top: 2px solid black;
+}
+
+.Table .GroupLeft {
+    border-left: 2px solid black;
+}
+
+.Table .GroupRight {
+    border-right: 2px solid black;
+}
+
+.Table .GroupBottom {
+    border-bottom: 2px solid black;
+}

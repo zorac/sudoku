@@ -1,0 +1,120 @@
+.Cell {
+    background-color: #fff;
+    position: relative;
+    font-size: 2vmin;
+    height: 8vmin;
+    width: 8vmin;
+    transition: all 0.25s;
+}
+
+.Cell.Impossible {
+    background-color: #fdd;
+}
+
+.Number {
+    color: rgba(0, 0, 0, 0.5);
+    display: block;
+    position: absolute;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    height: 33.333%;
+    width: 33.333%;
+    text-align: center;
+    transition: all 0.25s ease-in-out;
+}
+
+.NumberTop {
+    top: 0;
+}
+
+.NumberCenter {
+    left: 33.333%;
+}
+
+.NumberBottom {
+    bottom: 0;
+}
+
+.NumberLeft {
+    left: 0;
+}
+
+.NumberMiddle {
+    top: 33.333%;
+}
+
+.NumberRight {
+    right: 0;
+}
+
+.Number.Actual {
+    color: black;
+    height: 100%;
+    width: 100%;
+    font-size: 333%;
+}
+
+.Number.Actual.Duplicate {
+    color: red;
+}
+
+.NumberCenter.Actual {
+    left: 0;
+}
+
+.NumberMiddle.Actual {
+    top: 0;
+}
+
+.Number.Unactual {
+    color: transparent;
+    font-size: 0;
+    height: 0;
+    width: 0;
+}
+
+.NumberLeft.ActualLeft {
+    left: 16.666%;
+}
+
+.NumberCenter.ActualLeft {
+    left: 83.333%;
+}
+
+.NumberCenter.ActualRight {
+    left: 16.666%;
+}
+
+.NumberCenter.ActualCenter {
+    left: 50%;
+}
+
+.NumberRight.ActualRight {
+    right: 16.666%;
+}
+
+.NumberTop.ActualTop {
+    top: 16.666%;
+}
+
+.NumberMiddle.ActualTop {
+    top: 83.333%;
+}
+
+.NumberMiddle.ActualMiddle {
+    top: 50%;
+}
+
+.NumberMiddle.ActualBottom {
+    top: 16.666%;
+}
+
+.NumberBottom.ActualBottom {
+    bottom: 16.666%;
+}
+
+.Number.Impossible {
+    color: rgba(0, 0, 0, 0.1);
+}
