@@ -1,6 +1,6 @@
 import React from 'react'
 import Datum from '../model/Datum'
-import { GridAction } from '../model/actions'
+import { ModelAction } from '../model/actions'
 import Value, { ALL_VALUES } from '../model/Value'
 import './Cell.css'
 
@@ -30,7 +30,7 @@ const ACTUAL = [ '',
 
 type CellProps = {
     datum: Datum
-    dispatch: React.Dispatch<GridAction>
+    dispatch: React.Dispatch<ModelAction>
     className?: string
 }
 
@@ -54,7 +54,7 @@ export default React.memo(Cell)
 
 type SubCellProps = {
     datum: Datum
-    dispatch: React.Dispatch<GridAction>
+    dispatch: React.Dispatch<ModelAction>
     value: Value
 }
 

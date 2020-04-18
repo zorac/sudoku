@@ -42,8 +42,8 @@ export type ClearActualAction = DatumAction & {
     type: 'ClearActual'
 }
 
-/** All actions handled by the grid reducer. */
-export type GridAction = SetGridAction
+/** All actions handled by the model reducer. */
+export type ModelAction = SetGridAction
                         | RemovePossibleAction
                         | AddPossibleAction
                         | SetActualAction

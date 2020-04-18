@@ -7,12 +7,14 @@ import './Toolbar.css'
 
 type ToolbarProps = {
     grid: Grid
+    canUndo: boolean
+    canRedo: Boolean
     dispatch: React.Dispatch<AnyAction>
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({
     grid: { data, solved, insoluble },
-    dispatch
+    canUndo, canRedo, dispatch
 }) => {
     const [ content, setContent ] = useState('')
     const [ running, setRunning ] = useState(false)
@@ -21,9 +23,9 @@ const Toolbar: React.FC<ToolbarProps> = ({
     const canSolve = !insoluble && (percent < 100)
     const noSolve = running || !canSolve
 
-    const step = useCallback(() => dispatch({
-        type: 'Solve'
-    }), [ dispatch ])
+    const undo = useCallback(() => dispatch({ type: 'Undo' }), [ dispatch ])
+    const redo = useCallback(() => dispatch({ type: 'Redo' }), [ dispatch ])
+    const step = useCallback(() => dispatch({ type: 'Solve' }), [ dispatch ])
 
     const clear = useCallback(() => dispatch({
         type: 'SetGrid',
@@ -51,6 +53,8 @@ const Toolbar: React.FC<ToolbarProps> = ({
         <div className="Toolbar">
             <span className="Solved">{percent}% Solved</span>
             {insoluble && <span className="Insoluble">Insoluble</span>}
+            <button onClick={undo} disabled={!canUndo}>Undo</button>
+            <button onClick={redo} disabled={!canRedo}>Redo</button>
             <button onClick={step} disabled={noSolve}>Step</button>
             <button onClick={() => setRunning(true)} disabled={noSolve}>Run</button>
             <button onClick={() => setRunning(false)} disabled={!running}>Stop</button>

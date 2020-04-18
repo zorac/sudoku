@@ -1,19 +1,17 @@
 import { AnyAction } from '../actions'
 import Grid from './Grid'
-import { Reducer } from '../reducer'
+import { GridReducer } from '../reducer'
 import { addPossible, clearActual, removePossible, setActual } from './updaters'
 
 /**
  * A reducer for the grid.
  *
- * @param state The current state of the grid.
+ * @param state The previous state.
  * @param action The action to undertake.
- * @return The new state of the grid, possibly unchanged.
+ * @return The new state, possibly unchanged.
  */
-const reducer: Reducer = (state: Grid, action: AnyAction) => {
+const reducer: GridReducer = (state: Grid, action: AnyAction) => {
     switch (action.type) {
-        case 'SetGrid':
-            return action.grid
         case 'RemovePossible':
             return removePossible(state, action.datum, action.possible)
         case 'AddPossible':

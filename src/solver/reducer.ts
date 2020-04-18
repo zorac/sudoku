@@ -1,6 +1,6 @@
 import { AnyAction } from '../actions'
 import Grid from '../model/Grid'
-import { Reducer } from '../reducer'
+import { GridReducer } from '../reducer'
 import Solver from './Solver'
 import checkForInsolubility from './checkForInsolubility'
 import cleanUpPossibles from './cleanUpPossibles'
@@ -28,7 +28,7 @@ const SOLVERS: Array<Solver> = [
  * @param action The action to undertake.
  * @return The new state of the grid, possibly unchanged.
  */
-const reducer: Reducer = (state: Grid, action: AnyAction) => {
+const reducer: GridReducer = (state: Grid, action: AnyAction) => {
     switch (action.type) {
         case 'Solve':
             const { data, insoluble, solved } = state

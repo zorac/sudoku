@@ -37,15 +37,11 @@ const groupIntersections: Solver = grid => {
                     }
                 }
 
-                if (bad) {
-                    continue
-                }
+                if (bad) continue
 
                 // For every other group in the intersection
                 for (let l = 0; l < groupIds.length; l++) {
-                    if (l === j) {
-                        continue
-                    }
+                    if (l === j) continue
 
                     const { data: otherData } = groups[groupIds[l]]
 
