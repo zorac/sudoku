@@ -1,7 +1,7 @@
 import React from 'react'
+import { AnyAction } from '../actions'
 import Cell from './Cell'
 import Grid from '../model/Grid'
-import { GridAction } from '../model/actions'
 import './Table.css'
 
 const INDICES = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]
@@ -32,7 +32,7 @@ const CLASSY = [
 
 type TableProps = {
     grid: Grid
-    dispatch: React.Dispatch<GridAction>
+    dispatch: React.Dispatch<AnyAction>
 }
 
 const Table: React.FC<TableProps> = ({ grid, dispatch }) => {

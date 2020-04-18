@@ -2,176 +2,212 @@ import { DatumId } from './Datum'
 import Grid from './Grid'
 import Value from './Value'
 
+/** A comparison function for values. */
+const byValue: (a: Value, b: Value) => number = (a, b) => a - b
+
 /**
  * Remove a possible value from a datum.
  *
  * @param grid The current state of the grid.
- * @param datum_id The ID of the datum to modify.
- * @param possible The possible value to remove from the datum.
+ * @param id The ID of the datum to modify.
+ * @param value The possible value to remove from the datum.
  * @return The new state of the grid, possibly unchanged.
  */
 export function removePossible(
     grid: Grid,
-    datum_id: DatumId,
-    possible: Value
+    id: DatumId,
+    value: Value
 ): Grid {
-    const datum = grid.data[datum_id]
+    const datum = grid.data[id]
+    const { possible } = datum
 
-    if (datum.actual || !datum.possible.includes(possible)) {
+    if (!possible.includes(value)) {
         return grid // Short-circuit invalid operations
     }
 
     const data = [ ...grid.data ]
 
-    data[datum_id] = {
+    data[id] = {
         ...datum,
-        possible: datum.possible.filter(n => n !== possible)
+        possible: possible.filter(p => p !== value)
     }
 
     // TODO what if a group has no datum with actual/possible?
 
-    return { ...grid, data }
+    return { ...grid, data, insoluble: false }
 }
 
 /**
  * Add a possible value to a datum.
  *
  * @param grid The current state of the grid.
- * @param datum_id The ID of the datum to modify.
- * @param possible The possible value to add to the datum.
+ * @param id The ID of the datum to modify.
+ * @param value The possible value to add to the datum.
  * @return The new state of the grid, possibly unchanged.
  */
 export function addPossible(
     grid: Grid,
-    datum_id: DatumId,
-    possible: Value
+    id: DatumId,
+    value: Value
 ): Grid {
-    const datum = grid.data[datum_id]
+    const datum = grid.data[id]
+    const { possible } = datum
 
-    if (datum.actual || datum.possible.includes(possible)) {
+    if (possible.includes(value)) {
         return grid // Short-circuit invalid operations
     }
 
     const data = [ ...grid.data ]
 
-    data[datum_id] = {
+    data[id] = {
         ...datum,
-        possible: [ ...datum.possible, possible ]
+        possible: [ ...possible, value ].sort(byValue)
     }
 
     // TODO what if possible has an actual in a group?
 
-    return { ...grid, data }
+    return { ...grid, data, insoluble: false }
 }
 
 /**
  * Set the actual value of a datum.
  *
  * @param grid The current state of the grid.
- * @param datum_id The ID of the datum to modify.
- * @param actual The actual value for the datum.
+ * @param id The ID of the datum to modify.
+ * @param value The actual value for the datum.
  * @return The new state of the grid, possibly unchanged.
  */
 export function setActual(
     grid: Grid,
-    datum_id: DatumId,
-    actual: Value
+    id: DatumId,
+    value: Value
 ): Grid {
-    let datum = grid.data[datum_id]
+    let { data, groups, solved } = grid
+    let datum = data[id]
+    const { actual, groups: datumGroups, possible } = datum
 
-    if ((datum.actual === actual) || !datum.possible.includes(actual)) {
+    if ((actual === value) || !possible.includes(value)) {
         return grid // Short-circuit invalid operations
+    } else if (actual) {
+        return setActual(clearActual(grid, id), id, value)
     }
 
-    const data = [ ...grid.data ]
+    data = [ ...data ]
+    groups = [ ...groups ]
+    solved = [ ...solved, id ]
+    datum = { ...datum, actual: value }
+    data[id] = datum
 
-    datum = { ...datum, actual }
-    data[datum_id] = datum
+    for (let i = 0; i < groups.length; i++) {
+        const group = groups[i]
+        const { data: groupData, id: groupId, missing } = group
 
-    const groups = grid.groups.map(group => {
-        if (!datum.groups.includes(group.id)) {
-            return group
+        if (!datumGroups.includes(groupId)) {
+            continue
         }
 
-        group.data.forEach(other_id => {
-            if (other_id === datum_id) {
-                return
+        for (let j = 0; j < groupData.length; j++) {
+            const otherId = groupData[j]
+
+            if (otherId === id) {
+                continue
             }
 
-            const other = data[other_id]
+            const other = data[otherId]
+            const { actual, possible } = other
 
-            if (other.actual === actual) {
-                if (!datum.duplicates.includes(other_id)) {
-                    datum.duplicates = [ ...datum.duplicates, other_id ]
-                }
+            if (actual === value) {
+                if (!datum.duplicates.includes(otherId)) {
+                    datum.duplicates = [ ...datum.duplicates, otherId ]
 
-                if (!other.duplicates.includes(datum_id)) {
-                    data[other_id] = {
-                        ...other,
-                        duplicates: [ ...other.duplicates, datum_id ]
+                    if (datum.duplicates.length === 1) {
+                        solved = solved.filter(s => s !== id)
                     }
                 }
-            } else if (other.possible.includes(actual)) {
-                data[other_id] = {
+
+                if (!other.duplicates.includes(id)) {
+                    const duplicates = [ ...other.duplicates, id ]
+
+                    data[otherId] = { ...other, duplicates }
+
+                    if (duplicates.length === 1) {
+                        solved = solved.filter(s => s !== otherId)
+                    }
+                }
+            } else if (possible.includes(value)) {
+                data[otherId] = {
                     ...other,
-                    possible: other.possible.filter(p => p !== actual)
+                    possible: possible.filter(p => p !== value)
                 }
             }
-        })
+        }
 
-        return { ...group, missing: group.missing.filter(m => m !== actual) }
-    })
+        groups[i] = { ...group, missing: missing.filter(m => m !== value) }
+    }
 
-    return { ...grid, data, groups }
+    return { ...grid, data, groups, solved, insoluble: false }
 }
 
 /**
  * Clear the actual value of a datum.
  *
  * @param grid The current state of the grid.
- * @param datum_id The ID of the datum to modify.
+ * @param id The ID of the datum to modify.
  * @return The new state of the grid, possibly unchanged.
  */
 export function clearActual(
     grid: Grid,
-    datum_id: DatumId
+    id: DatumId
 ): Grid {
-    let datum = grid.data[datum_id]
+    let { data, groups, solved } = grid
+    let datum = data[id]
+    const { actual, groups: datumGroups } = datum
 
-    if (!datum.actual) {
+    if (!actual) {
         return grid // Short-circuit invalid operations
     }
 
-    const actual = datum.actual
-    let data = [ ...grid.data ]
+    data = [ ...data ]
+    groups = [ ...groups ]
+    solved = solved.filter(s => s !== id)
+    data[id] = { ...datum, actual: undefined, duplicates: [] }
 
-    data[datum_id] = { ...datum, actual: undefined, duplicates: [] }
-
-    let groups = grid.groups.map(group => {
-        if (!datum.groups.includes(group.id)) {
-            return group
+    for (let groupId = 0; groupId < groups.length; groupId++) {
+        if (!datumGroups.includes(groupId)) {
+            continue
         }
 
-        group.data.forEach(other_id => {
-            if (other_id === datum_id) {
-                return
+        const group = groups[groupId]
+        const { data: groupData, missing } = group
+
+        for (let j = 0; j < groupData.length; j++) {
+            const otherId = groupData[j]
+
+            if (otherId === id) {
+                continue
             }
 
-            const other = data[other_id]
+            const other = data[otherId]
 
             if (other.actual === actual) {
-                if (other.duplicates.includes(datum_id)) {
-                    data[other_id] = {
-                        ...other,
-                        duplicates: other.duplicates.filter(d => d !== datum_id)
+                if (other.duplicates.includes(id)) {
+                    const duplicates = other.duplicates.filter(d => d !== id)
+
+                    data[otherId] = { ...other, duplicates }
+
+                    if (duplicates.length === 0) {
+                        solved.push(otherId)
                     }
                 }
             }
-        })
+        }
 
         // TODO may not be correct if there are duplicates!
-        return { ...group, missing: [ ...group.missing, actual ] }
-    })
+        groups[groupId] = {
+            ...group,
+            missing: [ ...missing, actual ].sort(byValue)
+        }
+    }
 
-    return { ...grid, data, groups }
+    return { ...grid, data, groups, solved, insoluble: false }
 }

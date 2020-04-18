@@ -1,11 +1,19 @@
 import { Action } from '../actions'
 import { DatumId} from './Datum'
+import Grid from './Grid'
 import Value from './Value'
 
 /** Base type for an action affecting a datum. */
 type DatumAction = Action & {
     /** The unique ID of the datum to modify. */
     datum: DatumId
+}
+
+/** Action to completely replace the grid witha new one. */
+export type SetGridAction = Action & {
+    type: 'SetGrid'
+    /** The grid to set. */
+    grid: Grid
 }
 
 /** Action to remove a possible value from a datum. */
@@ -35,7 +43,8 @@ export type ClearActualAction = DatumAction & {
 }
 
 /** All actions handled by the grid reducer. */
-export type GridAction = RemovePossibleAction
+export type GridAction = SetGridAction
+                        | RemovePossibleAction
                         | AddPossibleAction
                         | SetActualAction
                         | ClearActualAction

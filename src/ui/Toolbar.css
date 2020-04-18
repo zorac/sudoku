@@ -1,0 +1,19 @@
+.Toolbar {
+    margin-bottom: 1em;
+    width: 76vmin;
+}
+
+.Toolbar .Solved {
+    float: right;
+}
+
+.Toolbar .Insoluble {
+    color: red;
+    float: right;
+    margin-right: 1em;
+}
+
+.Toolbar input,
+.Toolbar button {
+    margin-right: 1em;
+}

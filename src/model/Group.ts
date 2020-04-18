@@ -1,5 +1,5 @@
 import { DatumId } from './Datum'
-import Value from './Value'
+import Value, { ALL_VALUES } from './Value'
 
 /** A unique identifier for a group. Must be a non-negative integer. */
 export type GroupId = number
@@ -13,7 +13,7 @@ export default class Group {
     /** The IDs of the data which comprise this group. */
     data: Array<DatumId> = []
     /** The numbers which are missing from this group. */
-    missing: Array<Value> = []
+    missing: Array<Value> = [ ...ALL_VALUES ]
 
     /**
      * Create a new group.
