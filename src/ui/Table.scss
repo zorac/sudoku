@@ -1,0 +1,46 @@
+@import '_vars.sass';
+
+.Table {
+    border-collapse: collapse;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.Table tbody td {
+    border: $border-cell;
+}
+
+.Table tbody .GridTop {
+    border-top: $border-grid;
+}
+
+.Table tbody .GridLeft {
+    border-left: $border-grid;
+}
+
+.Table tbody .GridRight {
+    border-right: $border-grid;
+}
+
+.Table tbody .GridBottom {
+    border-bottom: $border-grid;
+}
+
+.Table tbody .GroupTop {
+    border-top: $border-group;
+}
+
+.Table tbody .GroupLeft {
+    border-left: $border-group;
+}
+
+.Table tbody .GroupRight {
+    border-right: $border-group;
+}
+
+.Table tbody .GroupBottom {
+    border-bottom: $border-group;
+}

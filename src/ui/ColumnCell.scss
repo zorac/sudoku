@@ -1,0 +1,20 @@
+@import '_vars.sass';
+
+.Table td.ColumnCell {
+    border-color: transparent;
+    font-size: $font-size-number-small;
+    vertical-align: top;
+    width: $size-cell;
+}
+
+.ColumnCell span {
+    color: rgba(0, 0, 0, 0.5);
+    display: block;
+    height: $size-number;
+    text-align: center;
+    transition: all $transition;
+}
+
+.ColumnCell span.ColumnCellHidden {
+    color: $color-impossible;
+}

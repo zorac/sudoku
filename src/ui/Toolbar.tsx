@@ -3,7 +3,7 @@ import { AnyAction } from '../actions'
 import { makeStandardGrid } from '../model/factory'
 import { importStandardGrid } from '../model/importers'
 import Grid from '../model/Grid'
-import './Toolbar.css'
+import './Toolbar.scss'
 
 type ToolbarProps = {
     grid: Grid

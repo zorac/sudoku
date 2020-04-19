@@ -1,0 +1,25 @@
+@import '_vars.sass';
+
+.Table td.RowCell {
+    border-color: transparent;
+    font-size: $font-size-number-small;
+    height: $size-cell;
+    padding: 0;
+    position: relative;
+    vertical-align: top;
+    white-space: nowrap;
+}
+
+.RowCell span {
+    color: rgba(0, 0, 0, 0.5);
+    display: inline-block;
+    height: $size-number;
+    padding-top: $size-number + $padding-number-top;
+    text-align: center;
+    transition: all $transition;
+    width: $size-number;
+}
+
+.RowCell span.RowCellHidden {
+    color: $color-impossible;
+}

@@ -1,0 +1,18 @@
+@import '_vars.sass';
+
+.BoxCell {
+    padding: 0;
+    position: relative;
+    font-size: $font-size-number-small;
+    height: $size-cell;
+    width: $size-cell;
+    transition: all $transition;
+}
+
+.BoxCell:last-child {
+    border-right: none;
+}
+
+tr:last-child .BoxCell {
+    border-bottom: none;
+}

@@ -1,8 +1,12 @@
 import React from 'react'
 import { AnyAction } from '../actions'
-import Cell from './Cell'
+import ColumnCell from './ColumnCell'
 import Grid from '../model/Grid'
-import './Table.css'
+import GridCell from './GridCell'
+import RowCell from './RowCell'
+import Toolbar from './Toolbar'
+import './Table.scss'
+import BoxCell from './BoxCell'
 
 const INDICES = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]
 
@@ -32,26 +36,56 @@ const CLASSY = [
 
 type TableProps = {
     grid: Grid
+    canUndo: boolean
+    canRedo: Boolean
     dispatch: React.Dispatch<AnyAction>
 }
 
-const Table: React.FC<TableProps> = ({ grid, dispatch }) => {
+const Table: React.FC<TableProps> = (props) => {
+    const { grid, dispatch } = props
+
     return (
         <table className="Table">
+            <thead>
+                <tr>
+                    <td colSpan={9}>
+                        <Toolbar {...props}/>
+                    </td>
+                </tr>
+            </thead>
             <tbody>
                 {INDICES.map(y =>
                     <tr key={y}>
                         {INDICES.map(x =>
-                            <Cell key={x}
+                            <GridCell key={x}
                                 className={`${CLASSY[y]} ${CLASSX[x]}`}
                                 datum={grid.data[(y * 9) + x]}
                                 dispatch={dispatch}/>
                         )}
+                        <RowCell group={grid.groups[y]}/>
                     </tr>
                 )}
+                <tr>
+                    {INDICES.map(x =>
+                        <ColumnCell key={x} group={grid.groups[x + 9]}/>
+                    )}
+                    <BoxCell group={grid.groups[18]}/>
+                    <BoxCell group={grid.groups[19]}/>
+                    <BoxCell group={grid.groups[20]}/>
+                </tr>
+                <tr>
+                    <BoxCell group={grid.groups[21]}/>
+                    <BoxCell group={grid.groups[22]}/>
+                    <BoxCell group={grid.groups[23]}/>
+                </tr>
+                <tr>
+                    <BoxCell group={grid.groups[24]}/>
+                    <BoxCell group={grid.groups[25]}/>
+                    <BoxCell group={grid.groups[26]}/>
+                </tr>
             </tbody>
         </table>
     )
 }
 
-export default Table
+export default React.memo(Table)

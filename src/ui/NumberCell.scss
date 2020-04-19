@@ -1,0 +1,116 @@
+@import '_vars.sass';
+
+.Number {
+    color: $color-possible;
+    cursor: pointer;
+    display: block;
+    padding-top: $padding-number-top;
+    position: absolute;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    height: $size-number;
+    width: $size-number;
+    text-align: center;
+    transition: all $transition;
+}
+
+.NumberLeft {
+    left: 0;
+}
+
+.NumberCenter {
+    left: $pos-number-one-third;
+}
+
+.NumberRight {
+    left: $pos-number-two-thirds;
+}
+
+.NumberTop {
+    top: 0;
+}
+
+.NumberMiddle {
+    top: $pos-number-one-third;
+}
+
+.NumberBottom {
+    top: $pos-number-two-thirds;
+}
+
+.Number.Impossible {
+    color: $color-impossible
+}
+
+.Number.Actual {
+    color: $color-actaul;
+    font-size: $font-size-number-large;
+    height: $size-cell;
+    left: 0;
+    top: 0;
+    width: $size-cell;
+}
+
+.Number.Actual.Duplicate {
+    color: $color-actaul-error;
+}
+
+.Number.Unactual {
+    color: $color-unactaul;
+    font-size: 0;
+    height: 0;
+    padding-top: 0;
+    width: 0;
+}
+
+.ActualLeft .NumberLeft.Unactual {
+    left: $pos-number-one-sixth;
+}
+
+.ActualLeft .NumberCenter.Unactual {
+    left: $pos-number-five-sixths;
+}
+
+.ActualLeft .NumberRight.Unactual,
+.ActualCenter .NumberRight.Unactual {
+    left: $pos-number-max;
+}
+
+.ActualCenter .NumberCenter.Unactual {
+    left: $pos-number-one-half;
+}
+
+.ActualRight .NumberCenter.Unactual {
+    left: $pos-number-one-sixth;
+}
+
+.ActualRight .NumberRight.Unactual {
+    left: $pos-number-five-sixths;
+}
+
+.ActualTop .NumberTop.Unactual {
+    top: $pos-number-one-sixth;
+}
+
+.ActualTop .NumberMiddle.Unactual {
+    top: $pos-number-five-sixths;
+}
+
+.ActualTop .NumberBottom.Unactual,
+.ActualMiddle .NumberBottom.Unactual {
+    top: $pos-number-max;
+}
+
+.ActualMiddle .NumberMiddle.Unactual {
+    top: $pos-number-one-half;
+}
+
+.ActualBottom .NumberMiddle.Unactual {
+    top: $pos-number-one-sixth;
+}
+
+.ActualBottom .NumberBottom.Unactual {
+    top: $pos-number-five-sixths;
+}
